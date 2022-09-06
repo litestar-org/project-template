@@ -15,7 +15,7 @@ Template repository for packages belonging to Starlite-API org.
 
 Usage:
 
-- Pick it as a template in GitHub
+- Pick this template in GitHub.
 - If you don't want to use the `src` folder, rename it and replace all references to `src` with the new target folder.
 - Run `pre-commit install && pre-commit autoupdate`
 - Update pyproject.toml with your dependencies and run `poetry update` to create a lock file.

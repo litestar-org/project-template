@@ -87,11 +87,9 @@ repos:
     rev: "v0.971"
     hooks:
       - id: mypy
-        additional_dependencies:
-          [mkdocs_gen_files]
+        additional_dependencies: [mkdocs_gen_files, pydantic]
   - repo: https://github.com/RobertCraigie/pyright-python
     rev: v1.1.269
     hooks:
       - id: pyright
-        additional_dependencies:
-          [mkdocs_gen_files, pytest]
+        additional_dependencies: [mkdocs_gen_files, pytest]
