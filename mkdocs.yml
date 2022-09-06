@@ -1,0 +1,81 @@
+site_name: <name>
+repo_url: https://github.com/starlite-api/<repo>
+repo_name: starlite-api/<repo>
+site_url: https://starlite-api.github.io/<project>
+nav:
+  - index.md
+  - Reference: reference/
+watch:
+  - starlite_jwt
+theme:
+  name: material
+  palette:
+    - media: "(prefers-color-scheme: dark)"
+      scheme: mirage
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: mirage-light
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+  favicon: images/starlite-favicon.ico
+  logo: images/starlite-icon@2x.png
+  icon:
+    repo: fontawesome/brands/github
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.top
+    - navigation.expand
+    - toc.integrate
+    - search.suggest
+    - search.highlight
+    - search.share
+markdown_extensions:
+  - admonition
+  - meta
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.snippets
+  - pymdownx.superfences
+extra:
+  social:
+    - icon: fontawesome/brands/discord
+      link: https://discord.gg/X3FJqy8d2j
+    - icon: fontawesome/brands/github
+      link: https://github.com/starlite-api/<repo>
+extra_css:
+  - css/extra.css
+plugins:
+  - search:
+      lang: en
+  - gen-files:
+      scripts:
+        - docs/gen_ref_pages.py
+  - literate-nav:
+      nav_file: SUMMARY.md
+  - section-index
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [src]
+          import:
+            - https://docs.python.org/3/objects.inv
+            - https://starlite-api.github.io/starlite/objects.inv
+            - https://starlite-api.github.io/pydantic-openapi-schema/objects.inv
+          options:
+            docstring_style: google
+            docstring_options:
+              ignore_init_summary: yes
+            line_length: 100
+            merge_init_into_class: yes
+            separate_signature: yes
+            show_source: no
+            show_root_heading: no
+            show_root_full_path: no
+            show_root_toc_entry: no
+  - autorefs

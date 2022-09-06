@@ -1,0 +1,10 @@
+.idea/
+.mypy_cache/
+.pytest_cache/
+.hypothesis/
+__pycache__/
+*.iml
+.venv
+.env
+.vscode
+.python-version
