@@ -29,7 +29,7 @@ inside brackets, e.g. `<repo>.`
 ## Sonar
 
 - Import the repository into sonarcloud and update the sonar properties file to use the correct project key.
-- Add the `SONAR_TOKEN` secret in github as an action secret.
+- Add the `SONAR_TOKEN` secret in GitHub as an action secret.
 
 ## Release
 
