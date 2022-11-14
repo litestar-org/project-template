@@ -6,7 +6,7 @@ nav:
   - index.md
   - Reference: reference/
 watch:
-  - starlite_jwt
+  - src
 theme:
   name: material
   palette:

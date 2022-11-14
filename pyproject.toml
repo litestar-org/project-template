@@ -2,7 +2,7 @@
 name = "project-template"
 version = "1.0.0"
 description = ""
-authors = ["Your Name <you@example.com>"]
+authors = []
 maintainers = []
 license = "MIT"
 keywords = ["starlite"]
@@ -12,10 +12,10 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Natural Language :: English",
     "Operating System :: OS Independent",
-    "Programming Language :: Python :: 3.7",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
     "Programming Language :: Python",
     "Topic :: Internet :: WWW/HTTP",
     "Topic :: Software Development :: Libraries",
@@ -28,7 +28,7 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = ">=3.8, <4.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "*"
@@ -84,3 +84,12 @@ all = true
 [tool.pyright]
 include = ["src", "tests"]
 exclude = []
+
+[tool.slotscheck]
+strict-imports = false
+
+[tool.pydocstyle]
+add-ignore = "D100,D104,D105,D106,D202,D205,D415"
+add-select = "D401,D404,D417"
+convention = "google"
+match_dir = "starlite"

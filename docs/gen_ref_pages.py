@@ -6,9 +6,9 @@ import mkdocs_gen_files
 
 nav = mkdocs_gen_files.Nav()  # type: ignore[attr-defined]
 
-for path in sorted(Path("starlite_jwt").rglob("*.py")):  #
-    module_path = Path("starlite_jwt").with_suffix("")
-    doc_path = Path("starlite_jwt").with_suffix(".md")
+for path in sorted(Path("src").rglob("*.py")):  #
+    module_path = Path("src").with_suffix("")
+    doc_path = Path("src").with_suffix(".md")
     full_doc_path = Path("reference", doc_path)
 
     parts = module_path.parts
