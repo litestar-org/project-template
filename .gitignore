@@ -1,10 +1,20 @@
-.idea/
-.mypy_cache/
+# folders
 .pytest_cache/
 .hypothesis/
+.mypy_cache/
+.idea/
 __pycache__/
+.ruff_cache/
+/docs/_build/
+dist/
+
+# files
+.DS_Store
+coverage.*
+.coverage
+.python-version
 *.iml
+*.mod
 .venv
 .env
 .vscode
-.python-version

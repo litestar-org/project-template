@@ -1,4 +1,4 @@
-# project-template
+# Starlite Project Template
 
 <!-- markdownlint-disable -->
 <p align="center">
@@ -8,11 +8,12 @@
 <!-- markdownlint-restore -->
 
 <div align="center">
-
-[![Discord](https://img.shields.io/discord/919193495116337154?color=202235&label=%20Discord&logo=discord)](https://discord.gg/X3FJqy8d2j)                                 [![Matrix](https://img.shields.io/badge/%5Bm%5D%20Matrix-bridged-blue?color=202235)](https://matrix.to/#/#starlitespace:matrix.org)                                       [![Reddit](https://img.shields.io/reddit/subreddit-subscribers/starlite?label=r%2FStarlite&logo=reddit)](https://reddit.com/r/starlite)
+[![Discord](https://img.shields.io/discord/919193495116337154?color=202235&label=%20Discord&logo=discord)](https://discord.gg/X3FJqy8d2j)
+[![Matrix](https://img.shields.io/badge/%5Bm%5D%20Matrix-bridged-blue?color=202235)](https://matrix.to/#/#starlitespace:matrix.org)
+[![Reddit](https://img.shields.io/reddit/subreddit-subscribers/starlite?label=r%2FStarlite&logo=reddit)](https://reddit.com/r/starlite)
 </div>
 
-Template repository for packages belonging to Starlite-API org.
+Template repository for packages belonging to [@StarliteAPI](https://github.com/starlite-api/) org.
 
 Usage:
 
@@ -21,6 +22,7 @@ Usage:
 - Run `pre-commit install && pre-commit autoupdate`
 - Update pyproject.toml with your dependencies and run `poetry update` to create a lock file.
 - Update the project description, keywords, author, maintainers etc. in pyproject.toml
+- Add the CI badges to this README.md file from GitHub actions.
 
 ## Docs
 
