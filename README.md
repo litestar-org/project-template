@@ -1,16 +1,37 @@
-# project-template
-
 <!-- markdownlint-disable -->
 <p align="center">
-  <img src="https://github.com/starlite-api/branding/blob/9ab099a2089219c07727baaa29f67e9474ff93c8/assets/Starlite%20Branding%20-%20SVG%20-%20Transparent/Logo%20-%20Banner%20-%20Inline%20-%20Light.svg#gh-light-mode-only" alt="Starlite Logo - Light" width="100%" height="auto" />
-  <img src="https://github.com/starlite-api/branding/blob/9ab099a2089219c07727baaa29f67e9474ff93c8/assets/Starlite%20Branding%20-%20SVG%20-%20Transparent/Logo%20-%20Banner%20-%20Inline%20-%20Dark.svg#gh-dark-mode-only" alt="Starlite Logo - Dark" width="100%" height="auto" />
+  <img src="artwork/banner-light.svg#gh-light-mode-only" alt="Litestar Logo - Light" width="100%" height="auto" />
+  <img src="artwork/banner-dark.svg#gh-dark-mode-only" alt="Litestar Logo - Dark" width="100%" height="auto" />
 </p>
 <!-- markdownlint-restore -->
 
 <div align="center">
 
-[![Discord](https://img.shields.io/discord/919193495116337154?color=202235&label=%20Discord&logo=discord)](https://discord.gg/X3FJqy8d2j)                                 [![Matrix](https://img.shields.io/badge/%5Bm%5D%20Matrix-bridged-blue?color=202235)](https://matrix.to/#/#starlitespace:matrix.org)                                       [![Reddit](https://img.shields.io/reddit/subreddit-subscribers/starlite?label=r%2FStarlite&logo=reddit)](https://reddit.com/r/starlite)
+[![ci](https://github.com/litestar-org/litestar/actions/workflows/ci.yaml/badge.svg)](https://github.com/litestar-org/project-template/actions/workflows/ci.yaml)
+[![PyPI - Version](https://badge.fury.io/py/litestar.svg)](https://badge.fury.io/py/litestar-project-template)
+![PyPI - License](https://img.shields.io/pypi/l/litestar-project-template?color=blue)
+![PyPI - Support Python Versions](https://img.shields.io/pypi/pyversions/litestar-project-template)
+
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=litestar-org_project-template&metric=coverage)](https://sonarcloud.io/summary/new_code?id=litestar-org_project-template)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=litestar-org_project-template&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=litestar-org_project-template)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=litestar-org_project-template&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=litestar-org_project-template)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=litestar-org_project-template&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=litestar-org_project-template)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=litestar-org_project-template&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=litestar-org_project-template)
+
+<!-- prettier-ignore-start -->
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-107-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
+<!-- prettier-ignore-end -->
+
+[![Reddit](https://img.shields.io/reddit/subreddit-subscribers/litestarapi?label=r%2FLitestar&logo=reddit)](https://reddit.com/r/litestarapi)
+[![Discord](https://img.shields.io/discord/919193495116337154?color=blue&label=chat%20on%20discord&logo=discord)](https://discord.gg/X3FJqy8d2j)
+[![Matrix](https://img.shields.io/badge/%5Bm%5D%20chat%20on%20Matrix-bridged-blue)](https://matrix.to/#/#litestar:matrix.org)
+[![Medium](https://img.shields.io/badge/Medium-12100E?style=flat&logo=medium&logoColor=white)](https://blog.litestar.dev)
+
 </div>
+
+# project-template
 
 Template repository for packages belonging to Starlite-API org.
 
@@ -24,8 +45,7 @@ Usage:
 
 ## Docs
 
-Update the `mkdocs.yml` file to point at the repository and docs site by replacing all places that have values
-inside brackets, e.g. `<repo>.`
+TODO
 
 ## Sonar
 

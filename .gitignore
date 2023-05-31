@@ -1,10 +1,30 @@
+# folders
+__pycache__/
+.auto_pytabs_cache/
+.hypothesis/
 .idea/
 .mypy_cache/
 .pytest_cache/
-.hypothesis/
-__pycache__/
+.scannerwork/
+.venv/
+.vscode/
+*.egg-info/
+build/
+dist/
+node_modules/
+results/
+site/
+target/
+
+# files
+**/*.so
+**/*.sqlite
+**/*.sqlite*
 *.iml
-.venv
-.env
-.vscode
+.DS_Store
+.coverage
 .python-version
+.ruff_cache
+/docs/_build/
+coverage.*
+setup.py
