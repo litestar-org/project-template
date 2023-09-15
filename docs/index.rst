@@ -1,9 +1,6 @@
-.. template-project documentation master file, created by sphinx-quickstart on Thu Jun 1 2023
-.. You should at least document the different modules that you have in this project.
-.. Include any detailed information in the corresponding module file not here.
-
-Welcome to template-project's documentation!
-==============================================
+================
+template-project
+================
 
 Overview
 --------
