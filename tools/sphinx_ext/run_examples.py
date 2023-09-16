@@ -156,7 +156,7 @@ class LiteralInclude(LiteralIncludeOverride):
 
         tmp_file = self.env.tmp_examples_path / str(file.relative_to(docs_dir)).replace("/", "_")
 
-        self.arguments[0] = f"/{str(tmp_file.relative_to(docs_dir))}"
+        self.arguments[0] = f"/{tmp_file.relative_to(docs_dir)!s}"
         tmp_file.write_text(clean_content)
 
         nodes = super().run()
