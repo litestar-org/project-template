@@ -1,3 +1,4 @@
+"""Sphinx extension to run examples and include their output in the docs."""
 from __future__ import annotations
 
 import importlib
@@ -12,7 +13,7 @@ import sys
 import time
 from contextlib import contextmanager, redirect_stderr
 from pathlib import Path
-from typing import TYPE_CHECKING, Generator
+from typing import TYPE_CHECKING, Any, ClassVar, Generator
 
 import httpx
 import uvicorn
@@ -26,11 +27,9 @@ from litestar import Litestar
 if TYPE_CHECKING:
     from sphinx.application import Sphinx
 
-
 RGX_RUN = re.compile(r"# +?run:(.*)")
 
 AVAILABLE_PORTS = list(range(9000, 9999))
-
 
 logger = logging.getLogger("sphinx")
 
@@ -122,6 +121,7 @@ def exec_examples(app_file: Path, run_configs: list[list[str]]) -> str:
                 args,  # noqa: S603
                 capture_output=True,
                 text=True,
+                check=False,
             )
             stdout = proc.stdout.splitlines()
             if not stdout:
@@ -130,14 +130,14 @@ def exec_examples(app_file: Path, run_configs: list[list[str]]) -> str:
                     logger.error(f"Example: {app_file}:{args} yielded no results")
                 continue
 
-            result = "\n".join(line for line in ("> " + (" ".join(clean_args)), *stdout))
+            result = "\n".join(("> " + (" ".join(clean_args)), *stdout))
             results.append(result)
 
     return "\n".join(results)
 
 
 class LiteralInclude(LiteralIncludeOverride):
-    option_spec = {**LiteralIncludeOverride.option_spec, "no-run": directives.flag}
+    option_spec: ClassVar[dict[str, Any]] = {**LiteralIncludeOverride.option_spec, "no-run": directives.flag}
 
     def run(self) -> list[Node]:
         cwd = Path.cwd()
@@ -175,7 +175,7 @@ class LiteralInclude(LiteralIncludeOverride):
                     linenothreshold=sys.maxsize,
                 ),
                 literal_block("", result),
-            )
+            ),
         )
 
         return nodes

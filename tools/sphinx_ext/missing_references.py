@@ -1,3 +1,4 @@
+"""Sphinx extension for changelog and change directives."""
 from __future__ import annotations
 
 import ast
@@ -43,7 +44,7 @@ def get_module_global_imports(module_import_path: str, reference_target_source_o
     return {path.asname or path.name for import_node in import_nodes for path in import_node.names}
 
 
-def on_warn_missing_reference(app: Sphinx, domain: str, node: Node) -> bool | None:
+def on_warn_missing_reference(app: Sphinx, domain: str, node: Node) -> bool | None:  # noqa: PLR0911
     ignore_refs: dict[str | re.Pattern, set[str] | re.Pattern] = app.config["ignore_missing_refs"]
     if node.tagname != "pending_xref":  # type: ignore[attr-defined]
         return None
@@ -54,17 +55,17 @@ def on_warn_missing_reference(app: Sphinx, domain: str, node: Node) -> bool | No
     attributes = node.attributes  # type: ignore[attr-defined]
     target = attributes["reftarget"]
 
-    reference_target_source_obj = attributes.get("py:class", attributes.get("py:meth", attributes.get("py:func")))
-
-    if reference_target_source_obj:
+    if reference_target_source_obj := attributes.get(
+        "py:class",
+        attributes.get("py:meth", attributes.get("py:func")),
+    ):
         global_names = get_module_global_imports(attributes["py:module"], reference_target_source_obj)
 
         if target in global_names:
             # autodoc has issues with if TYPE_CHECKING imports, and randomly with type aliases in annotations,
             # so we ignore those errors if we can validate that such a name exists in the containing modules global
-            # scope or an if TYPE_CHECKING block.
-            # see: https://github.com/sphinx-doc/sphinx/issues/11225 and https://github.com/sphinx-doc/sphinx/issues/9813
-            # for reference
+            # scope or an if TYPE_CHECKING block. see: https://github.com/sphinx-doc/sphinx/issues/11225 and
+            # https://github.com/sphinx-doc/sphinx/issues/9813 for reference
             return True
 
     # for various other autodoc issues that can't be resolved automatically, we check the exact path to be able

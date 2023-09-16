@@ -41,7 +41,7 @@ jobs:
       - name: Install dependencies
         run: pdm install
 
-      - name: Set pythonpath
+      - name: Set python PATH
         run: echo "PYTHONPATH=$PWD" >> $GITHUB_ENV
 
       - name: Test

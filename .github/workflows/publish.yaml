@@ -24,5 +24,5 @@ jobs:
           allow-python-prereleases: true
           cache: true
 
-     - name: Publish package distributions to PyPI
+      - name: Publish package distributions to PyPI
         run: pdm publish

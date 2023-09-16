@@ -236,5 +236,5 @@ known-first-party = ["litestar", "tests", "examples"]
     "TCH",
     "TRY",
 ]
-"docs/**/*.*" = ["S", "B", "DTZ", "A", "TCH", "ERA", "D", "RET"]
-"tools/**/*.*" = ["D", "ARG", "EM", "TRY", "G", "FBT"]
+"docs/**/*.*" = ["S", "B", "DTZ", "A", "TCH", "ERA", "D", "RET", "INP", "ARG", "TD", "FIX"]
+"tools/**/*.*" = ["D", "ARG", "EM", "TRY", "G", "FBT", "ANN"]
