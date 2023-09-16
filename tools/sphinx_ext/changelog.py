@@ -114,7 +114,7 @@ class ChangelogDirective(SphinxDirective):
             term += nodes.reference(
                 "#",
                 "#",
-                refuri="#" + target_id,
+                refuri=f"#{target_id}",
                 internal=True,
                 classes=["headerlink"],
                 ids=[target_id],
