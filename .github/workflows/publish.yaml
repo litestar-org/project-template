@@ -1,23 +1,28 @@
 name: Latest Release
+
 on:
   release:
     types: [published]
+
 jobs:
   publish-release:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
-      - name: Set up python 3.11
-        uses: actions/setup-python@v4
+
+      - uses: actions/setup-python@v4
         with:
           python-version: "3.11"
-      - name: Install Poetry
-        uses: snok/install-poetry@v1
-      - name: Install dependencies
-        run: poetry install --no-interaction --no-root --no-dev
-      - name: publish
-        shell: bash
-        run: |
-          poetry config pypi-token.pypi ${{ secrets.PYPI_TOKEN }}
-          poetry publish --build --no-interaction
+
+      - uses: pdm-project/setup-pdm@v3
+        name: Set up PDM
+        with:
+          python-version: "3.11"
+          allow-python-prereleases: true
+          cache: true
+
+     - name: Publish package distributions to PyPI
+        run: pdm publish
