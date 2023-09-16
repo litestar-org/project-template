@@ -1,3 +1,6 @@
+"""Sphinx configuration."""
+from __future__ import annotations
+
 from functools import partial
 from typing import Any
 
@@ -92,7 +95,11 @@ html_theme_options = {
 
 
 def update_html_context(
-    app: Sphinx, pagename: str, templatename: str, context: dict[str, Any], doctree: document
+    app: Sphinx,
+    pagename: str,
+    templatename: str,
+    context: dict[str, Any],
+    doctree: document,
 ) -> None:
     context["generate_toctree_html"] = partial(context["generate_toctree_html"], startdepth=0)
 

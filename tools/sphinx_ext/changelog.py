@@ -1,10 +1,15 @@
+"""Sphinx extension for changelog and change directives."""
+from __future__ import annotations
+
 from functools import partial
-from typing import Literal
+from typing import TYPE_CHECKING, Any, ClassVar, Literal
 
 from docutils import nodes
 from docutils.parsers.rst import directives
-from sphinx.application import Sphinx
 from sphinx.util.docutils import SphinxDirective
+
+if TYPE_CHECKING:
+    from sphinx.application import Sphinx
 
 _GH_BASE_URL = "https://github.com/litestar-org/litestar"
 
@@ -21,7 +26,7 @@ class ChangeDirective(SphinxDirective):
     required_arguments = 1
     has_content = True
     final_argument_whitespace = True
-    option_spec = {
+    option_spec: ClassVar[dict[str, Any]] = {
         "type": partial(directives.choice, values=("feature", "bugfix", "misc")),
         "breaking": directives.flag,
         "issue": directives.unchanged,
@@ -62,14 +67,14 @@ class ChangeDirective(SphinxDirective):
                 title=self.state.inliner.parse(title, 0, self.state.memo, change_node)[0],
                 change_type=change_type,
                 breaking="breaking" in self.options,
-            )
+            ),
         ]
 
 
 class ChangelogDirective(SphinxDirective):
     required_arguments = 1
     has_content = True
-    option_spec = {"date": directives.unchanged}
+    option_spec: ClassVar[dict[str, Any]] = {"date": directives.unchanged}
 
     def run(self) -> list[nodes.Node]:
         self.assert_has_content()
@@ -107,7 +112,12 @@ class ChangelogDirective(SphinxDirective):
             term += title
             target_id = f"{version}-{change_type}-{i}"
             term += nodes.reference(
-                "#", "#", refuri="#" + target_id, internal=True, classes=["headerlink"], ids=[target_id]
+                "#",
+                "#",
+                refuri=f"#{target_id}",
+                internal=True,
+                classes=["headerlink"],
+                ids=[target_id],
             )
             if change_node.attributes["breaking"]:
                 breaking_notice = nodes.inline("breaking", "breaking")
