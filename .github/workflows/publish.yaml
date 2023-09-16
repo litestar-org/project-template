@@ -24,5 +24,8 @@ jobs:
           allow-python-prereleases: true
           cache: true
 
+      - name: Build package distributions
+        run: pdm build
+
       - name: Publish package distributions to PyPI
-        run: pdm publish
+        uses: pypa/gh-action-pypi-publish@release/v1
