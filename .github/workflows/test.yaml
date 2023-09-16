@@ -47,8 +47,7 @@ jobs:
       - name: Test
         if: ${{ !inputs.coverage }}
         run: |
-          source $VENV
-          pytest
+          pdm run pytest
 
       - name: Test with coverage
         if: inputs.coverage
