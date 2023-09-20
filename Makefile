@@ -5,11 +5,11 @@ SHELL := /bin/bash
 
 .DEFAULT_GOAL:=help
 .ONESHELL:
-USING_PDM       =  $(shell grep "tool.pdm" pyproject.toml && echo "yes")
-ENV_PREFIX      := $(shell if [ -d .venv ]; then echo ".venv/bin/"; fi)
-VENV_EXISTS     := $(shell if [ -d .venv ]; then echo "yes"; fi)
-PDM_OPTS        ?=
-PDM             ?= pdm $(PDM_OPTS)
+USING_PDM		=	$(shell grep "tool.pdm" pyproject.toml && echo "yes")
+ENV_PREFIX		=	$(shell python3 -c "if __import__('pathlib').Path('.venv/bin/pip').exists(): print('.venv/bin/')")
+VENV_EXISTS		=	$(shell python3 -c "if __import__('pathlib').Path('.venv/bin/activate').exists(): print('yes')")
+PDM_OPTS 		?=
+PDM 			?= 	pdm $(PDM_OPTS)
 
 .EXPORT_ALL_VARIABLES:
 
@@ -31,9 +31,7 @@ upgrade:       										## Upgrade all dependencies to the latest stable versio
 # =============================================================================
 .PHONY: install-pdm
 install-pdm: 										## Install latest version of PDM
-	@curl -sSLO https://pdm.fming.dev/install-pdm.py && \
-	curl -sSL https://pdm.fming.dev/install-pdm.py.sha256 | shasum -a 256 -c - && \
-	python3 install-pdm.py
+	@curl -sSL https://pdm.fming.dev/install-pdm.py | python3 -
 
 install:											## Install the project and
 	@if ! $(PDM) --version > /dev/null; then echo '=> Installing PDM'; $(MAKE) install-pdm; fi
