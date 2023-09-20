@@ -1,16 +1,14 @@
 # Configuration file for the Sphinx documentation builder.
 import os
 
-from project-template.__metadata__ import __project__ as project
-from project-template.__metadata__ import __version__ as version
+from project_template.__metadata__ import __project__ as project
+from project_template.__metadata__ import __version__ as version
 
 # -- Environmental Data ------------------------------------------------------
 
 
 # -- Project information -----------------------------------------------------
-project = project
 author = "Jolt Org"
-release = version
 release = os.getenv("_PROJECT-TEMPLATE_DOCS_BUILD_VERSION", version.rsplit(".")[0])
 copyright = "2023, Jolt Org"
 
@@ -41,25 +39,8 @@ PY_ATTR = "py:attr"
 PY_OBJ = "py:obj"
 
 nitpicky = True
-nitpick_ignore = [
-    # external library / undocumented external
-    (PY_CLASS, "ExternalType"),
-    (PY_CLASS, "TypeEngine"),
-    (PY_CLASS, "UserDefinedType"),
-    (PY_CLASS, "_types.TypeDecorator"),
-    (PY_METH, "_types.TypeDecorator.process_bind_param"),
-    (PY_METH, "_types.TypeDecorator.process_result_value"),
-    (PY_METH, "type_engine"),
-    # type vars and aliases / intentionally undocumented
-    (PY_CLASS, "CollectionT"),
-    (PY_CLASS, "EmptyType"),
-    (PY_CLASS, "ModelT"),
-    (PY_CLASS, "T"),
-    (PY_CLASS, "AsyncSession"),
-    (PY_CLASS, "Select"),
-]
-nitpick_ignore_regex = [
-]
+nitpick_ignore = []
+nitpick_ignore_regex = []
 
 napoleon_google_docstring = True
 napoleon_include_special_with_doc = True

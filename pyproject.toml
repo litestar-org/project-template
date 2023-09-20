@@ -94,7 +94,6 @@ line-length = 120
 include = '\.pyi?$'
 
 [tool.codespell]
-ignore-words-list = "selectin"
 skip = 'pdm.lock'
 
 [tool.coverage.run]
@@ -112,15 +111,13 @@ exclude_lines = [
 asyncio_mode = "auto"
 
 [tool.pyright]
-include = ["src"]
+include = ["project_template"]
 exclude = ["tools"]
 
 [tool.slotscheck]
 strict-imports = false
 
 [tool.mypy]
-plugins = ["pydantic.mypy"]
-
 warn_unused_ignores = true
 warn_redundant_casts = true
 warn_unused_configs = true
@@ -128,7 +125,7 @@ warn_unreachable = true
 warn_return_any = true
 strict = true
 disallow_untyped_decorators = true
-disallow_any_generics = false
+disallow_any_generics = true
 implicit_reexport = false
 show_error_codes = true
 
@@ -152,7 +149,7 @@ ignore = [
     "PLW2901"  # pylint - for loop variable overwritten by assignment target
 ]
 line-length = 120
-src = ["src", "tests", "docs/examples"]
+src = ["project_template", "tests", "docs/examples"]
 target-version = "py38"
 
 [tool.ruff.pydocstyle]

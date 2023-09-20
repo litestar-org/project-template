@@ -43,9 +43,6 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Install Microsoft ODBC Drivers
-        run: sudo ACCEPT_EULA=Y apt-get install msodbcsql18 -y
-
       - uses: pdm-project/setup-pdm@v3
         name: Set up PDM
         with:
@@ -57,7 +54,7 @@ jobs:
         run: pdm install
 
       - name: Test
-        run: pdm run pytest -m "" -n auto
+        run: pdm run pytest -m ""
 
   build-docs:
     needs:
@@ -67,9 +64,6 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
-
-      - name: Install Microsoft ODBC
-        run: sudo ACCEPT_EULA=Y apt-get install msodbcsql18 -y
 
       - name: Set up Python
         uses: actions/setup-python@v4
