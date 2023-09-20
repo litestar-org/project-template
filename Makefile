@@ -31,7 +31,9 @@ upgrade:       										## Upgrade all dependencies to the latest stable versio
 # =============================================================================
 .PHONY: install-pdm
 install-pdm: 										## Install latest version of PDM
-	@curl -sSL https://pdm.fming.dev/install-pdm.py | python3 -
+	@curl -sSLO https://pdm.fming.dev/install-pdm.py && \
+	curl -sSL https://pdm.fming.dev/install-pdm.py.sha256 | shasum -a 256 -c - && \
+	python3 install-pdm.py
 
 install:											## Install the project and
 	@if ! $(PDM) --version > /dev/null; then echo '=> Installing PDM'; $(MAKE) install-pdm; fi
@@ -70,7 +72,7 @@ lint: 												## Runs pre-commit hooks; includes ruff linting, codespell, bl
 .PHONY: coverage
 coverage:  											## Run the tests and generate coverage report
 	@echo "=> Running tests with coverage"
-	@$(ENV_PREFIX)pytest tests --cov=src
+	@$(ENV_PREFIX)pytest tests --cov=project-template
 	@$(ENV_PREFIX)coverage html
 	@$(ENV_PREFIX)coverage xml
 	@echo "=> Coverage report generated"
@@ -108,7 +110,7 @@ docs-clean: 										## Dump the existing built docs
 
 docs-serve: docs-clean 								## Serve the docs locally
 	@echo "=> Serving documentation"
-	$(ENV_PREFIX)sphinx-autobuild docs docs/_build/ -j auto --watch src --watch docs --watch tests --watch CONTRIBUTING.rst --port 8002
+	$(ENV_PREFIX)sphinx-autobuild docs docs/_build/ -j auto --watch project-template --watch docs --watch tests --watch CONTRIBUTING.rst --port 8002
 
 docs: docs-clean 									## Dump the existing built docs and rebuild them
 	@echo "=> Building documentation"

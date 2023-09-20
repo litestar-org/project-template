@@ -1,39 +1,65 @@
-"""Sphinx configuration."""
-from __future__ import annotations
+# Configuration file for the Sphinx documentation builder.
+import os
 
-from functools import partial
-from typing import Any
+from project-template.__metadata__ import __project__ as project
+from project-template.__metadata__ import __version__ as version
 
-from sphinx.addnodes import document
-from sphinx.application import Sphinx
-
-__all__ = ["setup", "update_html_context"]
+# -- Environmental Data ------------------------------------------------------
 
 
-project = "project-template"
-copyright = "2023, Litestar-Org"
-author = "Litestar-Org"
+# -- Project information -----------------------------------------------------
+project = project
+author = "Jolt Org"
+release = version
+release = os.getenv("_PROJECT-TEMPLATE_DOCS_BUILD_VERSION", version.rsplit(".")[0])
+copyright = "2023, Jolt Org"
 
+# -- General configuration ---------------------------------------------------
 extensions = [
-    "sphinx.ext.intersphinx",
-    "sphinx.ext.autosectionlabel",
     "sphinx.ext.autodoc",
     "sphinx.ext.napoleon",
-    "sphinx_design",
-    "auto_pytabs.sphinx_ext",
-    "tools.sphinx_ext",
+    "sphinx.ext.autosectionlabel",
+    "sphinx.ext.githubpages",
+    "sphinx.ext.viewcode",
+    "sphinx.ext.intersphinx",
+    "docs.fix_missing_references",
     "sphinx_copybutton",
-    "sphinxcontrib.mermaid",
+    "sphinx.ext.todo",
+    "sphinx.ext.viewcode",
+    "sphinx_click",
+    "sphinx_toolbox.collapse",
+    "sphinx_design",
 ]
-
-exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
-
 
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3", None),
-    "sqlalchemy": ("https://docs.sqlalchemy.org/en/20/", None),
 }
+PY_CLASS = "py:class"
+PY_RE = r"py:.*"
+PY_METH = "py:meth"
+PY_ATTR = "py:attr"
+PY_OBJ = "py:obj"
 
+nitpicky = True
+nitpick_ignore = [
+    # external library / undocumented external
+    (PY_CLASS, "ExternalType"),
+    (PY_CLASS, "TypeEngine"),
+    (PY_CLASS, "UserDefinedType"),
+    (PY_CLASS, "_types.TypeDecorator"),
+    (PY_METH, "_types.TypeDecorator.process_bind_param"),
+    (PY_METH, "_types.TypeDecorator.process_result_value"),
+    (PY_METH, "type_engine"),
+    # type vars and aliases / intentionally undocumented
+    (PY_CLASS, "CollectionT"),
+    (PY_CLASS, "EmptyType"),
+    (PY_CLASS, "ModelT"),
+    (PY_CLASS, "T"),
+    (PY_CLASS, "AsyncSession"),
+    (PY_CLASS, "Select"),
+]
+nitpick_ignore_regex = [
+]
 
 napoleon_google_docstring = True
 napoleon_include_special_with_doc = True
@@ -47,66 +73,81 @@ autodoc_class_signature = "separated"
 autodoc_default_options = {"special-members": "__init__", "show-inheritance": True, "members": True}
 autodoc_member_order = "bysource"
 autodoc_typehints_format = "short"
-
-nitpicky = True
-
-auto_pytabs_min_version = (3, 8)
-auto_pytabs_max_version = (3, 11)
-auto_pytabs_compat_mode = True
+autodoc_type_aliases = {"FilterTypes": "FilterTypes"}
 
 autosectionlabel_prefix_document = True
 
-suppress_warnings = [
-    "autosectionlabel.*",
-    "ref.python",  # TODO: remove when https://github.com/sphinx-doc/sphinx/issues/4961 is fixed
-]
+todo_include_todos = True
 
-html_theme = "litestar_sphinx_theme"
+templates_path = ["_templates"]
+exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
+
+# -- Style configuration -----------------------------------------------------
+html_theme = "shibuya"
 html_static_path = ["_static"]
-html_js_files = ["versioning.js"]
-html_css_files = ["style.css"]
-html_show_sourcelink = False
-html_title = "Litestar Project Template"
-
-
-html_theme_options = {
-    "use_page_nav": False,
-    "github_repo_name": "project-template",
-    "logo": {
-        "link": "https://github.com/litestar-org/project-template.git",
-    },
-    "extra_navbar_items": {
-        "Documentation": "index",
-        "Community": {
-            "Contributing": {
-                "description": "Learn how to contribute to the Litestar project",
-                "link": "https://docs.litestar.dev/2/contribution-guide.html",
-                "icon": "contributing",
-            },
-            "Code of Conduct": {
-                "description": "Review the etiquette for interacting with the Litestar community",
-                "link": "https://github.com/litestar-org/.github/blob/main/CODE_OF_CONDUCT.md",
-                "icon": "coc",
-            },
-        },
-        "Help": "https://github.com/orgs/litestar-org/discussions",
-    },
+html_css_files = ["css/custom.css"]
+html_show_sourcelink = True
+html_title = "Docs"
+html_favicon = "_static/logo.png"
+html_logo = "_static/logo.png"
+html_context = {
+    "source_type": "github",
+    "source_user": "jolt-org",
+    "source_repo": project.replace("_", "-"),
 }
 
+brand_colors = {
+    "--brand-primary": {"rgb": "245, 0, 87", "hex": "#f50057"},
+    "--brand-secondary": {"rgb": "32, 32, 32", "hex": "#202020"},
+    "--brand-tertiary": {"rgb": "161, 173, 161", "hex": "#A1ADA1"},
+    "--brand-green": {"rgb": "0, 245, 151", "hex": "#00f597"},
+    "--brand-alert": {"rgb": "243, 96, 96", "hex": "#f36060"},
+    "--brand-dark": {"rgb": "0, 0, 0", "hex": "#000000"},
+    "--brand-light": {"rgb": "235, 221, 221", "hex": "#ebdddd"},
+}
 
-def update_html_context(
-    app: Sphinx,
-    pagename: str,
-    templatename: str,
-    context: dict[str, Any],
-    doctree: document,
-) -> None:
-    context["generate_toctree_html"] = partial(context["generate_toctree_html"], startdepth=0)
-
-
-def setup(app: Sphinx) -> dict[str, bool]:
-    app.setup_extension("litestar_sphinx_theme")
-    app.setup_extension("pydata_sphinx_theme")
-    app.connect("html-page-context", update_html_context)
-
-    return {"parallel_read_safe": True, "parallel_write_safe": True}
+html_theme_options = {
+    "logo_target": "/",
+    "announcement": "This documentation is currently under development.",
+    "github_url": "https://github.com/jolt-org/project-template",
+    "nav_links": [
+        {"title": "Home", "url": "https://project-template.jolt.rs"},
+        {"title": "Docs", "url": "https://docs.project-template.jolt.rs"},
+        {"title": "Code", "url": "https://github.com/jolt-org/project-template"},
+    ],
+    "light_css_variables": {
+        # RGB
+        "--sy-rc-theme": brand_colors["--brand-primary"]["rgb"],
+        "--sy-rc-text": brand_colors["--brand-primary"]["rgb"],
+        "--sy-rc-invert": brand_colors["--brand-primary"]["rgb"],
+        # "--sy-rc-bg": brand_colors["--brand-secondary"]["rgb"],
+        # Hex
+        "--sy-c-link": brand_colors["--brand-secondary"]["hex"],
+        # "--sy-c-foot-bg": "#191919",
+        "--sy-c-foot-divider": brand_colors["--brand-primary"]["hex"],
+        "--sy-c-foot-text": brand_colors["--brand-dark"]["hex"],
+        "--sy-c-bold": brand_colors["--brand-primary"]["hex"],
+        "--sy-c-heading": brand_colors["--brand-primary"]["hex"],
+        "--sy-c-text-weak": brand_colors["--brand-primary"]["hex"],
+        "--sy-c-text": brand_colors["--brand-dark"]["hex"],
+        "--sy-c-bg-weak": brand_colors["--brand-dark"]["rgb"],
+    },
+    "dark_css_variables": {
+        # RGB
+        "--sy-rc-theme": brand_colors["--brand-primary"]["rgb"],
+        "--sy-rc-text": brand_colors["--brand-primary"]["rgb"],
+        "--sy-rc-invert": brand_colors["--brand-primary"]["rgb"],
+        "--sy-rc-bg": brand_colors["--brand-dark"]["rgb"],
+        # Hex
+        "--sy-c-link": brand_colors["--brand-primary"]["hex"],
+        "--sy-c-foot-bg": brand_colors["--brand-dark"]["hex"],
+        "--sy-c-foot-divider": brand_colors["--brand-primary"]["hex"],
+        "--sy-c-foot-text": brand_colors["--brand-light"]["hex"],
+        "--sy-c-bold": brand_colors["--brand-primary"]["hex"],
+        "--sy-c-heading": brand_colors["--brand-primary"]["hex"],
+        "--sy-c-text-weak": brand_colors["--brand-primary"]["hex"],
+        "--sy-c-text": brand_colors["--brand-light"]["hex"],
+        "--sy-c-bg-weak": brand_colors["--brand-dark"]["hex"],
+        "--sy-c-bg": brand_colors["--brand-primary"]["hex"],
+    },
+}

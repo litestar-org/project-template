@@ -3,21 +3,23 @@ authors = [
     {name = "Cody Fincher", email = "cody.fincher@gmail.com"},
     {name = "Janek Nouvertné", email = "provinzkraut@posteo.de"},
     {name = "Jacob Coffee", email = "jacob@z7x.org"},
+    {name = "Peter Schutt", email = "peter.github@proton.me"},
 ]
 maintainers = [
     {name = "Cody Fincher", email = "cody.fincher@gmail.com"},
     {name = "Janek Nouvertné", email = "provinzkraut@posteo.de"},
     {name = "Jacob Coffee", email = "jacob@z7x.org"},
+    {name = "Peter Schutt", email = "peter.github@proton.me"},
 ]
 keywords = [
     "api",
     "rest",
     "asgi",
     "litestar",
-    "starlite",
+    "project-template",
 ]
 classifiers = [
-    "Development Status :: 5 - Production/Stable",
+    "Development Status :: 3 - Alpha",
     "Environment :: Web Environment",
     "License :: OSI Approved :: MIT License",
     "Natural Language :: English",
@@ -29,9 +31,9 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python",
     "Topic :: Internet :: WWW/HTTP",
-    "Topic :: Software Development :: Libraries",
     "Topic :: Software Development",
     "Typing :: Typed",
+    "Intended Audience :: Developers",
 ]
 name = "project-template"
 version = "0.1.0"
@@ -39,49 +41,36 @@ description = "project-template is a Python template project designed to simplif
 readme = "README.md"
 license = {text = "MIT"}
 requires-python = ">=3.8,<4.0"
-dependencies = [
-    "litestar[standard]",
-]
 
 [project.urls]
-"Issue Tracker" = "https://github.com/litestar-org/project-template/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc"
-Changelog = "https://github.com/litestar-org/project-template/releases/"
-Twitter = "https://twitter.com/LitestarAPI"
-Reddit = "https://www.reddit.com/r/litestarapi"
-Discord = "https://discord.gg/MmcwxztmQb"
-Blog = "https://blog.litestar.dev"
-homepage = "https://litestar.dev/"
-repository = "https://github.com/litestar-org/project-template"
-documentation = "https://docs.litestar.dev/"
+"Issue Tracker" = "https://github.com/jolt-org/project-template/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc"
+Changelog = "https://github.com/jolt-org/project-template/releases/"
+Discord = "https://discord.gg/XpFNTjjtTK"
+Blog = "https://blog.jolt.rs"
+homepage = "https://jolt.rs/"
+repository = "https://github.com/jolt-org/project-template"
+documentation = "https://docs.project-template.jolt.rs/"
 
 [build-system]
 build-backend = "hatchling.build"
 requires = ["hatchling"]
 
-[project.scripts]
-app = "litestar.__main__:run_cli"
-
-
 [tool.pdm.scripts]
 lint = "pre-commit run --all-files"
 test = "pytest"
-docs-serve = "sphinx-autobuild docs docs/_build/ -j auto --watch src --watch docs --watch tests --port 8002"
+docs-serve = "sphinx-autobuild docs docs/_build/ -j auto --watch project-template --watch docs --watch tests --port 8002"
 ci = {composite = ["lint", "test"]}
 
 [tool.pdm.dev-dependencies]
 docs = [
-    "sphinx>=7.1.2",
-    "sphinx-autobuild>=2021.3.14",
-    "black>=23.9.1",
-    "httpx>=0.25.0",
-    "auto-pytabs[sphinx]>=0.4.0",
-    "sphinx-copybutton>=0.5.2",
-    "sphinx-toolbox>=3.5.0",
-    "blacken-docs>=1.16.0",
-    "sphinx-design>=0.5.0",
-    "sphinxcontrib-mermaid>=0.9.2",
-    "uvicorn>=0.23.2",
-    "litestar-sphinx-theme @ git+https://github.com/litestar-org/litestar-sphinx-theme.git",
+  "sphinx>=7.1.2",
+  "sphinx-autobuild>=2021.3.14",
+  "sphinx-copybutton>=0.5.2",
+  "shibuya>=2023.9.3",
+  "sphinx-click>=5.0.1",
+  "sphinx-toolbox>=3.5.0",
+  "blacken-docs>=1.16.0",
+  "sphinx-design>=0.5.0",
 ]
 lint = [
     "black>=23.9.1",
@@ -178,7 +167,7 @@ classmethod-decorators = [
 ]
 
 [tool.ruff.isort]
-known-first-party = ["litestar", "tests", "examples"]
+known-first-party = ["project-template", "tests", "examples"]
 
 [tool.ruff.per-file-ignores]
 "tests/**/*.*" = [

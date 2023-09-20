@@ -1,4 +1,4 @@
-name: Tests and Linting
+name: Tests And Linting
 
 on:
   pull_request:
@@ -24,67 +24,80 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/.cache/pre-commit/
-          key: pre-commit-|${{ env.pythonLocation }}|${{ hashFiles('.pre-commit-config.yaml') }}
+          key: pre-commit|${{ env.pythonLocation }}|${{ hashFiles('.pre-commit-config.yaml') }}
 
       - name: Execute Pre-Commit
         run: pre-commit run --show-diff-on-failure --color=always --all-files
 
   test:
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: true
       matrix:
         python-version: ["3.8", "3.9", "3.10", "3.11"]
-    uses: ./.github/workflows/test.yaml
-    with:
-      python-version: ${{ matrix.python-version }}
-      coverage: ${{ matrix.python-version == '3.11' }}
+    timeout-minutes: 30
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
 
-  test-platform-compat:
-    if: github.event_name == 'push'
-    strategy:
-      fail-fast: true
-      matrix:
-        os: ["macos-latest", "windows-latest"]
-    uses: ./.github/workflows/test.yaml
-    with:
-      python-version: "3.11"
-      os: ${{ matrix.os }}
+      - name: Install Microsoft ODBC Drivers
+        run: sudo ACCEPT_EULA=Y apt-get install msodbcsql18 -y
 
-  sonar:
+      - uses: pdm-project/setup-pdm@v3
+        name: Set up PDM
+        with:
+          python-version: ${{ matrix.python-version }}
+          allow-python-prereleases: true
+          cache: true
+
+      - name: Install dependencies
+        run: pdm install
+
+      - name: Test
+        run: pdm run pytest -m "" -n auto
+
+  build-docs:
     needs:
-      - test
       - validate
-    if: github.event.pull_request.head.repo.fork == false && github.repository_owner == 'litestar-org'
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
-      - name: Download Artifacts
-        uses: actions/download-artifact@v3
-        with:
-          name: coverage-xml
-      - name: Fix coverage file for sonarcloud
-        run: sed -i "s/home\/runner\/work\/litestar\/litestar/github\/workspace/g" coverage.xml
-      - name: SonarCloud Scan
-        uses: sonarsource/sonarcloud-github-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-  codeql:
-    needs:
-      - test
-      - validate
-    runs-on: ubuntu-latest
-    permissions:
-      security-events: write
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Initialize CodeQL Without Dependencies
-        uses: github/codeql-action/init@v2
+      - name: Install Microsoft ODBC
+        run: sudo ACCEPT_EULA=Y apt-get install msodbcsql18 -y
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
         with:
-          setup-python-dependencies: false
-          languages: python
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v2
+          python-version: "3.11"
+
+      - uses: pdm-project/setup-pdm@v3
+        name: Set up PDM
+        with:
+          python-version: "3.11"
+          allow-python-prereleases: true
+          cache: true
+
+      - name: Install dependencies
+        run: pdm install -G:docs
+
+      - name: Build docs
+        run: pdm run make docs
+
+      - name: Save PR number
+        env:
+          PR_NUMBER: ${{ github.event.number }}
+        run: echo $PR_NUMBER > .pr_number
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: docs-preview
+          path: |
+            docs/_build/html
+            .pr_number
