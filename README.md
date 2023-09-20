@@ -21,8 +21,8 @@ any project that is a part of the Jolt organization.
 > [!IMPORTANT]\
 >
 > - [Create a new repository][newrepo] using this template repository.
-> - Run the [new_project.py][tools/new_project.py] script to initialize the project and set the project name.
-> - Update the [README.md][README.md] file with the project-specific information.
+> - Run the [new_project.py](tools/new_project.py) script to initialize the project and set the project name.
+> - Update the [README.md](README.md) file with the project-specific information.
 > - (Optional if not using docs) Create the `$project-name-docs-preview` repository.
 >   - If the project does not utilize docs, remove the `.github/workflows/docs-preview.yaml`.
 > - Remove any template-specific sections from the repos
