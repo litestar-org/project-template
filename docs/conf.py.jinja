@@ -1,15 +1,15 @@
 # Configuration file for the Sphinx documentation builder.
 import os
 
-from project_template.__metadata__ import __project__ as project
-from project_template.__metadata__ import __version__ as version
+from {{module_name}}.__metadata__ import __project__ as project
+from {{module_name}}.__metadata__ import __version__ as version
 
 # -- Environmental Data ------------------------------------------------------
 
 
 # -- Project information -----------------------------------------------------
 author = "Jolt Org"
-release = os.getenv("_PROJECT-TEMPLATE_DOCS_BUILD_VERSION", version.rsplit(".")[0])
+release = os.getenv("_{{module_name|upper}}_DOCS_BUILD_VERSION", version.rsplit(".")[0])
 copyright = "2023, Jolt Org"
 
 # -- General configuration ---------------------------------------------------
@@ -20,7 +20,6 @@ extensions = [
     "sphinx.ext.githubpages",
     "sphinx.ext.viewcode",
     "sphinx.ext.intersphinx",
-    "docs.fix_missing_references",
     "sphinx_copybutton",
     "sphinx.ext.todo",
     "sphinx.ext.viewcode",
@@ -90,11 +89,11 @@ brand_colors = {
 html_theme_options = {
     "logo_target": "/",
     "announcement": "This documentation is currently under development.",
-    "github_url": "https://github.com/jolt-org/project-template",
+    "github_url": "https://github.com/jolt-org/{{project_name}}",
     "nav_links": [
-        {"title": "Home", "url": "https://project-template.jolt.rs"},
-        {"title": "Docs", "url": "https://docs.project-template.jolt.rs"},
-        {"title": "Code", "url": "https://github.com/jolt-org/project-template"},
+        {"title": "Home", "url": "https://{{project_name}}.jolt.rs"},
+        {"title": "Docs", "url": "https://docs.{{project_name}}.jolt.rs"},
+        {"title": "Code", "url": "https://github.com/jolt-org/{{project_name}}"},
     ],
     "light_css_variables": {
         # RGB

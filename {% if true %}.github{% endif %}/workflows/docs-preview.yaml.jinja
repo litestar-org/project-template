@@ -7,7 +7,9 @@ on:
 
 jobs:
   deploy:
+    {% raw %}
     if: ${{ github.event.workflow_run.conclusion == 'success' &&  github.event.workflow_run.event == 'pull_request' }}
+    {% endraw %}
     runs-on: ubuntu-latest
     permissions:
       issues: write
@@ -21,7 +23,9 @@ jobs:
         uses: dawidd6/action-download-artifact@v2
         with:
           workflow_conclusion: success
+          {% raw %}
           run_id: ${{ github.event.workflow_run.id }}
+          {% endraw %}
           path: docs-preview
           name: docs-preview
 
@@ -32,19 +36,25 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: docs-preview/docs/_build/html
+          {% raw %}
           token: ${{ secrets.DOCS_PREVIEW_DEPLOY_TOKEN }}
-          repository-name: jolt-org/project-template-docs-preview
+          {% endraw %}
+          repository-name: jolt-org/{{project_name}}-docs-preview
           clean: false
+          {% raw %}
           target-folder: ${{ env.PR_NUMBER }}
+          {% endraw %}
           branch: gh-pages
 
       - uses: actions/github-script@v6
         env:
+          {% raw %}
           PR_NUMBER: ${{ env.PR_NUMBER }}
+          {% endraw %}
         with:
           script: |
             const issue_number = process.env.PR_NUMBER
-            const body = "Documentation preview will be available shortly at https://jolt-org.github.io/project-template-docs-preview/" + issue_number
+            const body = "Documentation preview will be available shortly at https://jolt-org.github.io/{{project_name}}-docs-preview/" + issue_number
 
             const opts = github.rest.issues.listComments.endpoint.merge({
               owner: context.repo.owner,

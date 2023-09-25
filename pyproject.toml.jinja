@@ -12,11 +12,11 @@ maintainers = [
     {name = "Peter Schutt", email = "peter.github@proton.me"},
 ]
 keywords = [
-    "api",
-    "rest",
-    "asgi",
-    "litestar",
-    "project-template",
+    "programming",
+    "developer",
+    "tools",
+    "jolt-org",
+    "{{project_name}}",
 ]
 classifiers = [
     "Development Status :: 3 - Alpha",
@@ -35,21 +35,21 @@ classifiers = [
     "Typing :: Typed",
     "Intended Audience :: Developers",
 ]
-name = "project-template"
+name = "{{project_name}}"
 version = "0.1.0"
-description = "project-template is a Python template project designed to simplify the setup of a new project."
+description = "{{project_name}} is a Python template project designed to simplify the setup of a new project."
 readme = "README.md"
 license = {text = "MIT"}
 requires-python = ">=3.8,<4.0"
 
 [project.urls]
-"Issue Tracker" = "https://github.com/jolt-org/project-template/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc"
-Changelog = "https://github.com/jolt-org/project-template/releases/"
+"Issue Tracker" = "https://github.com/jolt-org/{{project_name}}/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc"
+Changelog = "https://github.com/jolt-org/{{project_name}}/releases/"
 Discord = "https://discord.gg/XpFNTjjtTK"
 Blog = "https://blog.jolt.rs"
 homepage = "https://jolt.rs/"
-repository = "https://github.com/jolt-org/project-template"
-documentation = "https://docs.project-template.jolt.rs/"
+repository = "https://github.com/jolt-org/{{project_name}}"
+documentation = "https://docs.{{project_name}}.jolt.rs/"
 
 [build-system]
 build-backend = "hatchling.build"
@@ -58,7 +58,7 @@ requires = ["hatchling"]
 [tool.pdm.scripts]
 lint = "pre-commit run --all-files"
 test = "pytest"
-docs-serve = "sphinx-autobuild docs docs/_build/ -j auto --watch project-template --watch docs --watch tests --port 8002"
+docs-serve = "sphinx-autobuild docs docs/_build/ -j auto --watch {{module_name}} --watch docs --watch tests --port 8002"
 ci = {composite = ["lint", "test"]}
 
 [tool.pdm.dev-dependencies]
@@ -111,7 +111,7 @@ exclude_lines = [
 asyncio_mode = "auto"
 
 [tool.pyright]
-include = ["project_template"]
+include = ["{{module_name}}"]
 exclude = ["tools"]
 
 [tool.slotscheck]
@@ -149,7 +149,7 @@ ignore = [
     "PLW2901"  # pylint - for loop variable overwritten by assignment target
 ]
 line-length = 120
-src = ["project_template", "tests", "docs/examples"]
+src = ["{{module_name}}", "tests", "docs/examples"]
 target-version = "py38"
 
 [tool.ruff.pydocstyle]
@@ -164,7 +164,7 @@ classmethod-decorators = [
 ]
 
 [tool.ruff.isort]
-known-first-party = ["project-template", "tests", "examples"]
+known-first-party = ["{{module_name}}", "tests", "examples"]
 
 [tool.ruff.per-file-ignores]
 "tests/**/*.*" = [
