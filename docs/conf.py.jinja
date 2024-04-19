@@ -1,45 +1,42 @@
 # Configuration file for the Sphinx documentation builder.
 import os
 
-from {{module_name}}.__metadata__ import __project__ as project
-from {{module_name}}.__metadata__ import __version__ as version
+from {{ module_name }}.__metadata__ import __project__ as project
+from {{ module_name }}.__metadata__ import __version__ as version
 
 # -- Environmental Data ------------------------------------------------------
 
 
 # -- Project information -----------------------------------------------------
-author = "Jolt Org"
-release = os.getenv("_{{module_name|upper}}_DOCS_BUILD_VERSION", version.rsplit(".")[0])
-copyright = "2023, Jolt Org"
+project = "{{ project_name }}"
+copyright = "2023, Litestar-Org"
+author = "Litestar-Org"
+release = os.getenv("_{{ module_name|upper }}_DOCS_BUILD_VERSION", version.rsplit(".")[0])
 
 # -- General configuration ---------------------------------------------------
 extensions = [
+    "auto_pytabs.sphinx_ext",
     "sphinx.ext.autodoc",
-    "sphinx.ext.napoleon",
     "sphinx.ext.autosectionlabel",
-    "sphinx.ext.githubpages",
-    "sphinx.ext.viewcode",
     "sphinx.ext.intersphinx",
-    "sphinx_copybutton",
-    "sphinx.ext.todo",
-    "sphinx.ext.viewcode",
+    "sphinx.ext.napoleon",
     "sphinx_click",
-    "sphinx_toolbox.collapse",
+    "sphinx_copybutton",
     "sphinx_design",
+    "sphinx_paramlinks",
+    "sphinxcontrib.mermaid",
+    "tools.sphinx_ext",
 ]
 
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3", None),
 }
+
 PY_CLASS = "py:class"
 PY_RE = r"py:.*"
 PY_METH = "py:meth"
 PY_ATTR = "py:attr"
 PY_OBJ = "py:obj"
-
-nitpicky = True
-nitpick_ignore = []
-nitpick_ignore_regex = []
 
 napoleon_google_docstring = True
 napoleon_include_special_with_doc = True
@@ -53,81 +50,88 @@ autodoc_class_signature = "separated"
 autodoc_default_options = {"special-members": "__init__", "show-inheritance": True, "members": True}
 autodoc_member_order = "bysource"
 autodoc_typehints_format = "short"
-autodoc_type_aliases = {"FilterTypes": "FilterTypes"}
+
+nitpicky = True
+nitpick_ignore = []
+nitpick_ignore_regex = []
 
 autosectionlabel_prefix_document = True
-
-todo_include_todos = True
 
 templates_path = ["_templates"]
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
 # -- Style configuration -----------------------------------------------------
-html_theme = "shibuya"
+html_theme = "litestar_sphinx_theme"
 html_static_path = ["_static"]
-html_css_files = ["css/custom.css"]
-html_show_sourcelink = True
-html_title = "Docs"
-html_favicon = "_static/logo.png"
-html_logo = "_static/logo.png"
+html_js_files = ["versioning.js"]
+html_css_files = ["style.css"]
+html_show_sourcelink = False
+html_title = "{{ project_name }} Documentation"
 html_context = {
     "source_type": "github",
-    "source_user": "jolt-org",
+    "source_user": "litestar-org",
     "source_repo": project.replace("_", "-"),
 }
 
-brand_colors = {
-    "--brand-primary": {"rgb": "245, 0, 87", "hex": "#f50057"},
-    "--brand-secondary": {"rgb": "32, 32, 32", "hex": "#202020"},
-    "--brand-tertiary": {"rgb": "161, 173, 161", "hex": "#A1ADA1"},
-    "--brand-green": {"rgb": "0, 245, 151", "hex": "#00f597"},
-    "--brand-alert": {"rgb": "243, 96, 96", "hex": "#f36060"},
-    "--brand-dark": {"rgb": "0, 0, 0", "hex": "#000000"},
-    "--brand-light": {"rgb": "235, 221, 221", "hex": "#ebdddd"},
-}
-
 html_theme_options = {
-    "logo_target": "/",
-    "announcement": "This documentation is currently under development.",
-    "github_url": "https://github.com/jolt-org/{{project_name}}",
-    "nav_links": [
-        {"title": "Home", "url": "https://{{project_name}}.jolt.rs"},
-        {"title": "Docs", "url": "https://docs.{{project_name}}.jolt.rs"},
-        {"title": "Code", "url": "https://github.com/jolt-org/{{project_name}}"},
-    ],
-    "light_css_variables": {
-        # RGB
-        "--sy-rc-theme": brand_colors["--brand-primary"]["rgb"],
-        "--sy-rc-text": brand_colors["--brand-primary"]["rgb"],
-        "--sy-rc-invert": brand_colors["--brand-primary"]["rgb"],
-        # "--sy-rc-bg": brand_colors["--brand-secondary"]["rgb"],
-        # Hex
-        "--sy-c-link": brand_colors["--brand-secondary"]["hex"],
-        # "--sy-c-foot-bg": "#191919",
-        "--sy-c-foot-divider": brand_colors["--brand-primary"]["hex"],
-        "--sy-c-foot-text": brand_colors["--brand-dark"]["hex"],
-        "--sy-c-bold": brand_colors["--brand-primary"]["hex"],
-        "--sy-c-heading": brand_colors["--brand-primary"]["hex"],
-        "--sy-c-text-weak": brand_colors["--brand-primary"]["hex"],
-        "--sy-c-text": brand_colors["--brand-dark"]["hex"],
-        "--sy-c-bg-weak": brand_colors["--brand-dark"]["rgb"],
+    "use_page_nav": False,
+    "github_repo_name": project.replace("_", "-"),
+    "logo": {
+        "link": "https://litestar.dev",
     },
-    "dark_css_variables": {
-        # RGB
-        "--sy-rc-theme": brand_colors["--brand-primary"]["rgb"],
-        "--sy-rc-text": brand_colors["--brand-primary"]["rgb"],
-        "--sy-rc-invert": brand_colors["--brand-primary"]["rgb"],
-        "--sy-rc-bg": brand_colors["--brand-dark"]["rgb"],
-        # Hex
-        "--sy-c-link": brand_colors["--brand-primary"]["hex"],
-        "--sy-c-foot-bg": brand_colors["--brand-dark"]["hex"],
-        "--sy-c-foot-divider": brand_colors["--brand-primary"]["hex"],
-        "--sy-c-foot-text": brand_colors["--brand-light"]["hex"],
-        "--sy-c-bold": brand_colors["--brand-primary"]["hex"],
-        "--sy-c-heading": brand_colors["--brand-primary"]["hex"],
-        "--sy-c-text-weak": brand_colors["--brand-primary"]["hex"],
-        "--sy-c-text": brand_colors["--brand-light"]["hex"],
-        "--sy-c-bg-weak": brand_colors["--brand-dark"]["hex"],
-        "--sy-c-bg": brand_colors["--brand-primary"]["hex"],
+    "pygment_light_style": "xcode",
+    "pygment_dark_style": "lightbulb",
+    "navigation_with_keys": True,
+    "extra_navbar_items": {
+        "Documentation": "index",
+        "Community": {
+            "Contributing": {
+                "description": "Learn how to contribute to the Litestar project",
+                "link": "https://docs.{{ project_name }}.litestar.dev/latest/contribution-guide.html",
+                "icon": "contributing",
+            },
+            "Code of Conduct": {
+                "description": "Review the etiquette for interacting with the Litestar community",
+                "link": "https://github.com/litestar-org/.github?tab=coc-ov-file",
+                "icon": "coc",
+            },
+            "Security": {
+                "description": "Overview of Litestar's security protocols",
+                "link": "https://github.com/litestar-org/.github?tab=coc-ov-file#security-ov-file",
+                "icon": "coc",
+            },
+        },
+        "About": {
+            "Litestar Organization": {
+                "description": "Details about the Litestar organization",
+                "link": "https://litestar.dev/about/organization",
+                "icon": "org",
+            },
+            "Releases": {
+                "description": "Explore the release process, versioning, and deprecation policy for Litestar",
+                "link": "https://litestar.dev/about/litestar-releases",
+                "icon": "releases",
+            },
+        },
+        "Release notes": {
+            "0.x Changelog": "https://docs.{{ project_name }}.litestar.dev/0/release-notes/changelog.html",
+        },
+        "Help": {
+            "Discord Help Forum": {
+                "description": "Dedicated Discord help forum",
+                "link": "https://discord.gg/litestar",
+                "icon": "coc",
+            },
+            "GitHub Discussions": {
+                "description": "GitHub Discussions ",
+                "link": "https://github.com/orgs/litestar-org/discussions",
+                "icon": "coc",
+            },
+            "Stack Overflow": {
+                "description": "We monitor the <code><b>litestar</b></code> tag on Stack Overflow",
+                "link": "https://stackoverflow.com/questions/tagged/{{ project_name }}",
+                "icon": "coc",
+            },
+        },
     },
 }
