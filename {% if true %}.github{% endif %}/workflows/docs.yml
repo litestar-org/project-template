@@ -1,0 +1,58 @@
+name: Documentation Building
+
+on:
+  release:
+    types: [published]
+  push:
+    branches:
+      - main
+      - develop
+      - v3.0
+
+jobs:
+  docs:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - uses: pdm-project/setup-pdm@v4
+        name: Set up PDM
+        with:
+          python-version: "3.12"
+          allow-python-prereleases: false
+          cache: true
+          cache-dependency-path: |
+            ./pdm.lock
+
+      - name: Install dependencies
+        run: pdm sync -G:all
+
+      - name: Fetch gh pages
+        run: git fetch origin gh-pages --depth=1
+
+      - name: Build release docs
+        run: pdm run python tools/build_docs.py docs-build
+        if: github.event_name == 'release'
+
+      - name: Build docs (main branch)
+        run: pdm run python tools/build_docs.py docs-build --version main
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+      - name: Build docs (develop branch)
+        run: pdm run python tools/build_docs.py docs-build --version develop
+        if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
+
+      - name: Build docs (v3.0 branch)
+        run: pdm run python tools/build_docs.py docs-build --version 3-dev
+        if: github.event_name == 'push' && github.ref == 'refs/heads/v3.0'
+
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: docs-build

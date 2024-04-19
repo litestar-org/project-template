@@ -1,0 +1,137 @@
+# Configuration file for the Sphinx documentation builder.
+import os
+
+from {{ module_name }}.__metadata__ import __project__ as project
+from {{ module_name }}.__metadata__ import __version__ as version
+
+# -- Environmental Data ------------------------------------------------------
+
+
+# -- Project information -----------------------------------------------------
+project = "{{ project_name }}"
+copyright = "2023, Litestar-Org"
+author = "Litestar-Org"
+release = os.getenv("_{{ module_name|upper }}_DOCS_BUILD_VERSION", version.rsplit(".")[0])
+
+# -- General configuration ---------------------------------------------------
+extensions = [
+    "auto_pytabs.sphinx_ext",
+    "sphinx.ext.autodoc",
+    "sphinx.ext.autosectionlabel",
+    "sphinx.ext.intersphinx",
+    "sphinx.ext.napoleon",
+    "sphinx_click",
+    "sphinx_copybutton",
+    "sphinx_design",
+    "sphinx_paramlinks",
+    "sphinxcontrib.mermaid",
+    "tools.sphinx_ext",
+]
+
+intersphinx_mapping = {
+    "python": ("https://docs.python.org/3", None),
+}
+
+PY_CLASS = "py:class"
+PY_RE = r"py:.*"
+PY_METH = "py:meth"
+PY_ATTR = "py:attr"
+PY_OBJ = "py:obj"
+
+napoleon_google_docstring = True
+napoleon_include_special_with_doc = True
+napoleon_use_admonition_for_examples = True
+napoleon_use_admonition_for_notes = True
+napoleon_use_admonition_for_references = False
+napoleon_attr_annotations = True
+
+autoclass_content = "class"
+autodoc_class_signature = "separated"
+autodoc_default_options = {"special-members": "__init__", "show-inheritance": True, "members": True}
+autodoc_member_order = "bysource"
+autodoc_typehints_format = "short"
+
+nitpicky = True
+nitpick_ignore = []
+nitpick_ignore_regex = []
+
+autosectionlabel_prefix_document = True
+
+templates_path = ["_templates"]
+exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
+
+# -- Style configuration -----------------------------------------------------
+html_theme = "litestar_sphinx_theme"
+html_static_path = ["_static"]
+html_js_files = ["versioning.js"]
+html_css_files = ["style.css"]
+html_show_sourcelink = False
+html_title = "{{ project_name }} Documentation"
+html_context = {
+    "source_type": "github",
+    "source_user": "litestar-org",
+    "source_repo": project.replace("_", "-"),
+}
+
+html_theme_options = {
+    "use_page_nav": False,
+    "github_repo_name": project.replace("_", "-"),
+    "logo": {
+        "link": "https://litestar.dev",
+    },
+    "pygment_light_style": "xcode",
+    "pygment_dark_style": "lightbulb",
+    "navigation_with_keys": True,
+    "extra_navbar_items": {
+        "Documentation": "index",
+        "Community": {
+            "Contributing": {
+                "description": "Learn how to contribute to the Litestar project",
+                "link": "https://docs.{{ project_name }}.litestar.dev/latest/contribution-guide.html",
+                "icon": "contributing",
+            },
+            "Code of Conduct": {
+                "description": "Review the etiquette for interacting with the Litestar community",
+                "link": "https://github.com/litestar-org/.github?tab=coc-ov-file",
+                "icon": "coc",
+            },
+            "Security": {
+                "description": "Overview of Litestar's security protocols",
+                "link": "https://github.com/litestar-org/.github?tab=coc-ov-file#security-ov-file",
+                "icon": "coc",
+            },
+        },
+        "About": {
+            "Litestar Organization": {
+                "description": "Details about the Litestar organization",
+                "link": "https://litestar.dev/about/organization",
+                "icon": "org",
+            },
+            "Releases": {
+                "description": "Explore the release process, versioning, and deprecation policy for Litestar",
+                "link": "https://litestar.dev/about/litestar-releases",
+                "icon": "releases",
+            },
+        },
+        "Release notes": {
+            "0.x Changelog": "https://docs.{{ project_name }}.litestar.dev/0/release-notes/changelog.html",
+        },
+        "Help": {
+            "Discord Help Forum": {
+                "description": "Dedicated Discord help forum",
+                "link": "https://discord.gg/litestar",
+                "icon": "coc",
+            },
+            "GitHub Discussions": {
+                "description": "GitHub Discussions ",
+                "link": "https://github.com/orgs/litestar-org/discussions",
+                "icon": "coc",
+            },
+            "Stack Overflow": {
+                "description": "We monitor the <code><b>litestar</b></code> tag on Stack Overflow",
+                "link": "https://stackoverflow.com/questions/tagged/{{ project_name }}",
+                "icon": "coc",
+            },
+        },
+    },
+}
