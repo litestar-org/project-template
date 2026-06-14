@@ -5,11 +5,10 @@ SHELL := /bin/bash
 
 .DEFAULT_GOAL:=help
 .ONESHELL:
-USING_PDM       =  $(shell grep "tool.pdm" pyproject.toml && echo "yes")
 ENV_PREFIX      := $(shell if [ -d .venv ]; then echo ".venv/bin/"; fi)
 VENV_EXISTS     := $(shell if [ -d .venv ]; then echo "yes"; fi)
-PDM_OPTS        ?=
-PDM             ?= pdm $(PDM_OPTS)
+UV_OPTS         ?=
+UV              ?= uv $(UV_OPTS)
 
 .EXPORT_ALL_VARIABLES:
 
@@ -21,7 +20,8 @@ help: 		   										## Display this help text for Makefile
 .PHONY: upgrade
 upgrade:       										## Upgrade all dependencies to the latest stable versions
 	@echo "=> Updating all dependencies"
-	@if [ "$(USING_PDM)" ]; then $(PDM) update; fi
+	@$(UV) lock --upgrade
+	@$(UV) sync --all-groups
 	@echo "=> Dependencies Updated"
 	@$(ENV_PREFIX)pre-commit autoupdate
 	@echo "=> Updated Pre-commit"
@@ -29,19 +29,14 @@ upgrade:       										## Upgrade all dependencies to the latest stable versio
 # =============================================================================
 # Developer Utils
 # =============================================================================
-.PHONY: install-pdm
-install-pdm: 										## Install latest version of PDM
-	@curl -sSLO https://pdm.fming.dev/install-pdm.py && \
-	curl -sSL https://pdm.fming.dev/install-pdm.py.sha256 | shasum -a 256 -c - && \
-	python3 install-pdm.py
+.PHONY: install-uv
+install-uv: 										## Install latest version of uv
+	@curl -LsSf https://astral.sh/uv/install.sh | sh
 
-install:											## Install the project and
-	@if ! $(PDM) --version > /dev/null; then echo '=> Installing PDM'; $(MAKE) install-pdm; fi
-	@if [ "$(VENV_EXISTS)" ]; then echo "=> Removing existing virtual environment"; fi
-	if [ "$(VENV_EXISTS)" ]; then $(MAKE) destroy; fi
-	if [ "$(VENV_EXISTS)" ]; then $(MAKE) clean; fi
-	@if [ "$(USING_PDM)" ]; then $(PDM) config venv.in_project true && python3 -m venv --copies .venv && . $(ENV_PREFIX)/activate && $(ENV_PREFIX)/pip install --quiet -U wheel setuptools cython pip; fi
-	@if [ "$(USING_PDM)" ]; then $(PDM) install -G:all; fi
+install:											## Install the project and all dependency groups
+	@if ! $(UV) --version > /dev/null 2>&1; then echo '=> Installing uv'; $(MAKE) install-uv; fi
+	@if [ "$(VENV_EXISTS)" ]; then echo "=> Removing existing virtual environment"; $(MAKE) destroy; $(MAKE) clean; fi
+	@$(UV) sync --all-groups
 	@echo "=> Install complete! Note: If you want to re-install re-run 'make install'"
 
 clean: 												## Cleanup temporary build artifacts
@@ -66,26 +61,26 @@ destroy: 											## Destroy the virtual environment
 .PHONY: lint
 lint: 												## Runs pre-commit hooks; includes ruff linting, codespell, black
 	@echo "=> Running pre-commit process"
-	@$(ENV_PREFIX)pre-commit run --all-files
+	@$(UV) run pre-commit run --all-files
 	@echo "=> Pre-commit complete"
 
 .PHONY: coverage
 coverage:  											## Run the tests and generate coverage report
 	@echo "=> Running tests with coverage"
-	@$(ENV_PREFIX)pytest tests --cov=src
-	@$(ENV_PREFIX)coverage html
-	@$(ENV_PREFIX)coverage xml
+	@$(UV) run pytest tests --cov=src
+	@$(UV) run coverage html
+	@$(UV) run coverage xml
 	@echo "=> Coverage report generated"
 
 .PHONY: test
 test:  												## Run the tests
 	@echo "=> Running test cases"
-	@$(ENV_PREFIX)pytest tests
+	@$(UV) run pytest tests
 	@echo "=> Tests complete"
 
 .PHONY: test-examples
 test-examples:            			              	## Run the examples tests
-	pytest docs/examples
+	@$(UV) run pytest docs/examples
 
 .PHONY: test-all
 test-all: test test-examples 						## Run all tests
@@ -100,7 +95,7 @@ check-all: lint test-all coverage 					## Run all linting, tests, and coverage c
 .PHONY: docs-install
 docs-install: 										## Install docs dependencies
 	@echo "=> Installing documentation dependencies"
-	@$(PDM) install --group docs
+	@$(UV) sync --group docs
 	@echo "=> Installed documentation dependencies"
 
 docs-clean: 										## Dump the existing built docs
@@ -110,8 +105,8 @@ docs-clean: 										## Dump the existing built docs
 
 docs-serve: docs-clean 								## Serve the docs locally
 	@echo "=> Serving documentation"
-	$(ENV_PREFIX)sphinx-autobuild docs docs/_build/ -j auto --watch src --watch docs --watch tests --watch CONTRIBUTING.rst --port 8002
+	$(UV) run sphinx-autobuild docs docs/_build/ -j auto --watch src --watch docs --watch tests --watch CONTRIBUTING.rst --port 8002
 
 docs: docs-clean 									## Dump the existing built docs and rebuild them
 	@echo "=> Building documentation"
-	@$(ENV_PREFIX)sphinx-build -M html docs docs/_build/ -E -a -j auto --keep-going
+	@$(UV) run sphinx-build -M html docs docs/_build/ -E -a -j auto --keep-going

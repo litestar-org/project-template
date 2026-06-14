@@ -34,8 +34,25 @@ Usage:
 - Pick this template in GitHub.
 - If you don't want to use the `src` folder, rename it and replace all references to `src` with the new target folder.
 - Run `pre-commit install && pre-commit autoupdate`
-- Update pyproject.toml with your dependencies and run `pdm update` to create a lock file.
-- Update the project description, keywords, author, maintainers etc. in pyproject.toml
+- Update `pyproject.toml` with your dependencies and run `uv lock` to refresh the lock file.
+- Update the project description, keywords, author, maintainers etc. in `pyproject.toml`
+
+### Local development
+
+This project uses [uv](https://docs.astral.sh/uv/) for package and environment management.
+
+```bash
+uv sync --all-groups          # install runtime + docs/lint/test groups
+uv run pytest                 # run tests
+uv run pre-commit run -a      # lint
+uv lock --upgrade             # upgrade locked deps
+
+# Equivalent Makefile shortcuts
+make install
+make test
+make lint
+make upgrade
+```
 
 ## Docs
 
