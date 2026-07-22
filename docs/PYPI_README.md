@@ -29,7 +29,7 @@ Template repository for packages belonging to [@litestar-org](https://github.com
 Usage:
 
 - Pick this template in GitHub.
-- If you don't want to use the `src` folder, rename it and replace all references to `src` with the new target folder.
+- Rename the `src/project_template` package to your project's name and update the `name` in `pyproject.toml` and any imports to match (hatchling auto-discovers `src/<project_name>`).
 - Run `pre-commit install && pre-commit autoupdate`
 - Update `pyproject.toml` with your dependencies and run `uv lock` to refresh the lock file.
 - Update the project description, keywords, author, maintainers etc. in `pyproject.toml`

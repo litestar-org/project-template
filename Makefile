@@ -67,7 +67,7 @@ lint: 												## Runs pre-commit hooks; includes ruff linting, codespell, bl
 .PHONY: coverage
 coverage:  											## Run the tests and generate coverage report
 	@echo "=> Running tests with coverage"
-	@$(UV) run pytest tests --cov=src
+	@$(UV) run pytest tests --cov=project_template
 	@$(UV) run coverage html
 	@$(UV) run coverage xml
 	@echo "=> Coverage report generated"
