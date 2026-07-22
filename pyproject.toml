@@ -93,6 +93,14 @@ test = [
     "pytest-cov>=4.1.0",
 ]
 
+[tool.uv]
+# Ignore distributions published within the last week during resolution for
+# reproducibility and supply-chain safety. Accepts a friendly duration
+# (resolved relative to the current time on each run), an RFC 3339 timestamp,
+# or an ISO 8601 duration. See:
+# https://docs.astral.sh/uv/reference/settings/#exclude-newer
+exclude-newer = "1 week"
+
 [tool.black]
 line-length = 120
 include = '\.pyi?$'
