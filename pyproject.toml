@@ -94,6 +94,10 @@ test = [
 ]
 
 [tool.uv]
+# Require a uv version that understands the per-package `exclude-newer-package`
+# opt-out (`= false`), so older installs fail fast instead of silently ignoring
+# it. See: https://docs.astral.sh/uv/reference/settings/#required-version
+required-version = ">=0.9.25"
 # Ignore distributions published within the last week during resolution for
 # reproducibility and supply-chain safety. Accepts a friendly duration
 # (resolved relative to the current time on each run), an RFC 3339 timestamp,
