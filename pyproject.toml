@@ -94,9 +94,9 @@ test = [
 ]
 
 [tool.uv]
-# Require a uv version that understands the per-package `exclude-newer-package`
-# opt-out (`= false`), so older installs fail fast instead of silently ignoring
-# it. See: https://docs.astral.sh/uv/reference/settings/#required-version
+# The `= false` exclude-newer-package opt-out below landed in uv 0.9.25;
+# require it so older installs fail fast instead of silently ignoring it.
+# https://docs.astral.sh/uv/reference/settings/#required-version
 required-version = ">=0.9.25"
 # Ignore distributions published within the last week during resolution for
 # reproducibility and supply-chain safety. Accepts a friendly duration
@@ -105,7 +105,7 @@ required-version = ">=0.9.25"
 # https://docs.astral.sh/uv/reference/settings/#exclude-newer
 exclude-newer = "1 week"
 # Opt first-party (litestar-org) packages out of the cooldown so their newest
-# releases are always resolvable. `= false` requires uv >= 0.9.25. See:
+# releases are always resolvable (version gated by required-version above).
 # https://docs.astral.sh/uv/reference/settings/#exclude-newer-package
 exclude-newer-package = { litestar = false, advanced-alchemy = false, polyfactory = false }
 
