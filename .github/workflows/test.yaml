@@ -27,7 +27,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up uv
-        uses: astral-sh/setup-uv@v8
+        uses: astral-sh/setup-uv@v8.3.2
         with:
           python-version: ${{ inputs.python-version }}
           enable-cache: true
@@ -43,7 +43,7 @@ jobs:
         if: inputs.coverage
         run: uv run pytest docs/examples tests --cov=project_template --cov-report=xml
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: inputs.coverage
         with:
           name: coverage-xml

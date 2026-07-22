@@ -27,6 +27,9 @@ jobs:
           key: pre-commit-|${{ env.pythonLocation }}|${{ hashFiles('.pre-commit-config.yaml') }}
 
       - name: Execute Pre-Commit
+        env:
+          # slotscheck imports the package by name; expose the src layout on the path
+          PYTHONPATH: src
         run: pre-commit run --show-diff-on-failure --color=always --all-files
 
   test:
@@ -60,7 +63,7 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
       - name: Download Artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: coverage-xml
       - name: Fix coverage file for sonarcloud
