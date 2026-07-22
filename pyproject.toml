@@ -100,6 +100,10 @@ test = [
 # or an ISO 8601 duration. See:
 # https://docs.astral.sh/uv/reference/settings/#exclude-newer
 exclude-newer = "1 week"
+# Opt first-party (litestar-org) packages out of the cooldown so their newest
+# releases are always resolvable. `= false` requires uv >= 0.9.25. See:
+# https://docs.astral.sh/uv/reference/settings/#exclude-newer-package
+exclude-newer-package = { litestar = false, advanced-alchemy = false, polyfactory = false }
 
 [tool.black]
 line-length = 120
