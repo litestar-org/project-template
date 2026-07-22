@@ -67,9 +67,9 @@ make upgrade
 
 - Increment the version in pyproject.toml according to the versioning scheme
 - Draft a new release on GitHub
-    - Use vMAJOR.MINOR.PATCH (e.g. v1.2.3) as both the tag and release title
-      - The version should follow [semantic versioning](https://semver.org/) and [PEP 440](https://www.python.org/dev/peps/pep-0440/). 
-    - Fill in the release description. You can use the "Generate release notes" function to get a draft for this
+  - Use vMAJOR.MINOR.PATCH (e.g. v1.2.3) as both the tag and release title
+    - The version should follow [semantic versioning](https://semver.org/) and [PEP 440](https://www.python.org/dev/peps/pep-0440/).
+  - Fill in the release description. You can use the "Generate release notes" function to get a draft for this
 - Commit your changes and push to main
 - Publish the release
 - Go to Actions and approve the release workflow
