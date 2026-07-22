@@ -13,19 +13,14 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v8.3.2
         with:
           python-version: "3.11"
-
-      - uses: pdm-project/setup-pdm@v3
-        name: Set up PDM
-        with:
-          python-version: "3.11"
-          allow-python-prereleases: true
-          cache: true
+          enable-cache: true
 
       - name: Build package distributions
-        run: pdm build
+        run: uv build
 
       - name: Publish package distributions to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1

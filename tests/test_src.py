@@ -1,4 +1,4 @@
-from src import return_three
+from project_template import return_three
 
 
 def test_return_three() -> None:

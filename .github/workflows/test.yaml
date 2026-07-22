@@ -26,34 +26,24 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Set up python ${{ inputs.python-version }}
-        uses: actions/setup-python@v5
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v8.3.2
         with:
           python-version: ${{ inputs.python-version }}
-
-      - uses: pdm-project/setup-pdm@v3
-        name: Set up PDM
-        with:
-          python-version: ${{ inputs.python-version }}
-          allow-python-prereleases: true
-          cache: true
+          enable-cache: true
 
       - name: Install dependencies
-        run: pdm install
-
-      - name: Set python PATH
-        run: echo "PYTHONPATH=$PWD" >> $GITHUB_ENV
+        run: uv sync --all-groups
 
       - name: Test
         if: ${{ !inputs.coverage }}
-        run: |
-          pdm run pytest
+        run: uv run pytest
 
       - name: Test with coverage
         if: inputs.coverage
-        run: pdm run pytest docs/examples tests --cov=src --cov-report=xml
+        run: uv run pytest docs/examples tests --cov=project_template --cov-report=xml
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: inputs.coverage
         with:
           name: coverage-xml

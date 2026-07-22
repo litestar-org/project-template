@@ -32,10 +32,27 @@ Template repository for packages belonging to [@litestar-org](https://github.com
 Usage:
 
 - Pick this template in GitHub.
-- If you don't want to use the `src` folder, rename it and replace all references to `src` with the new target folder.
+- Rename the `src/project_template` package to your project's name and update the `name` in `pyproject.toml` and any imports to match (hatchling auto-discovers `src/<project_name>`).
 - Run `pre-commit install && pre-commit autoupdate`
-- Update pyproject.toml with your dependencies and run `pdm update` to create a lock file.
-- Update the project description, keywords, author, maintainers etc. in pyproject.toml
+- Update `pyproject.toml` with your dependencies and run `uv lock` to refresh the lock file.
+- Update the project description, keywords, author, maintainers etc. in `pyproject.toml`
+
+### Local development
+
+This project uses [uv](https://docs.astral.sh/uv/) for package and environment management.
+
+```bash
+uv sync --all-groups          # install runtime + docs/lint/test groups
+uv run pytest                 # run tests
+uv run pre-commit run -a      # lint
+uv lock --upgrade             # upgrade locked deps
+
+# Equivalent Makefile shortcuts
+make install
+make test
+make lint
+make upgrade
+```
 
 ## Docs
 
@@ -50,9 +67,9 @@ Usage:
 
 - Increment the version in pyproject.toml according to the versioning scheme
 - Draft a new release on GitHub
-    - Use vMAJOR.MINOR.PATCH (e.g. v1.2.3) as both the tag and release title
-      - The version should follow [semantic versioning](https://semver.org/) and [PEP 440](https://www.python.org/dev/peps/pep-0440/). 
-    - Fill in the release description. You can use the "Generate release notes" function to get a draft for this
+  - Use vMAJOR.MINOR.PATCH (e.g. v1.2.3) as both the tag and release title
+    - The version should follow [semantic versioning](https://semver.org/) and [PEP 440](https://www.python.org/dev/peps/pep-0440/).
+  - Fill in the release description. You can use the "Generate release notes" function to get a draft for this
 - Commit your changes and push to main
 - Publish the release
 - Go to Actions and approve the release workflow
