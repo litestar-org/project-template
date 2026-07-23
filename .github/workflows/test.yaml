@@ -15,19 +15,25 @@ on:
         type: string
         default: "ubuntu-latest"
 
+permissions: {}
+
 jobs:
   test:
     runs-on: ${{ inputs.os }}
     timeout-minutes: 10
+    permissions:
+      contents: read
     defaults:
       run:
         shell: bash
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
 
       - name: Set up uv
-        uses: astral-sh/setup-uv@v8.3.2
+        uses: astral-sh/setup-uv@11f9893b081a58869d3b5fccaea48c9e9e46f990 # v8.3.2
         with:
           python-version: ${{ inputs.python-version }}
           enable-cache: true
@@ -43,7 +49,7 @@ jobs:
         if: inputs.coverage
         run: uv run pytest docs/examples tests --cov=project_template --cov-report=xml
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: inputs.coverage
         with:
           name: coverage-xml
