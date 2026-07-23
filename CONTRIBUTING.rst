@@ -49,12 +49,13 @@ to see all available targets.
 
    This is equivalent to running ``uv sync --all-groups`` directly.
 
-#. Install the ``pre-commit`` hooks so linters and formatters run automatically
+#. Install the `prek <https://github.com/j178/prek>`_ hooks (a fast, drop-in
+   ``pre-commit`` replacement) so linters and formatters run automatically
    before each commit:
 
    .. code-block:: bash
 
-      uv run pre-commit install --install-hooks
+      uv run prek install --prepare-hooks
 
 .. tip::
 
@@ -75,10 +76,10 @@ Workflow
 #. Set up the environment as described above
 #. Make your changes
 #. (Optional) Run ``make lint`` to run linters, formatters, and type checks. This
-   runs automatically via ``pre-commit`` before each commit, but you may want to run
+   runs automatically via ``prek`` before each commit, but you may want to run
    it manually to apply fixes
 #. Commit your changes. We follow `Conventional Commits
-   <https://www.conventionalcommits.org/>`_, which is enforced by a ``pre-commit`` hook
+   <https://www.conventionalcommits.org/>`_, which is enforced by a ``prek`` hook
 #. Push the changes to your fork
 #. Open a `pull request <https://docs.github.com/en/pull-requests>`_. Give it a
    descriptive title that also follows `Conventional Commits
