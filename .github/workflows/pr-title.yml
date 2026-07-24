@@ -1,0 +1,24 @@
+name: Lint PR Title
+
+on:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - synchronize
+
+permissions: {}
+
+jobs:
+  validate:
+    name: Validate PR title
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
+    steps:
+      # Title validation needs no write token, so plain pull_request (rather
+      # than pull_request_target) is used - safer, and avoids running with a
+      # privileged token on fork PRs.
+      - uses: amannn/action-semantic-pull-request@48f256284bd46cdaab1048c3721360e808335d50 # v6.1.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
