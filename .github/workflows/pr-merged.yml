@@ -1,0 +1,59 @@
+name: PR merged
+
+on:
+  # pull_request_target is required so GITHUB_TOKEN can close/comment on issues
+  # for PRs originating from forks. Safe here: no PR head code is checked out or
+  # executed - the job only makes API calls via github-script.
+  pull_request_target: # zizmor: ignore[dangerous-triggers]
+    types:
+      - closed
+    branches:
+      - main
+
+permissions: {}
+
+jobs:
+  close_and_notify:
+    name: Close linked issues and notify
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: read
+    steps:
+      - uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        with:
+          script: |
+            const prNumber = context.payload.number
+            const commentBody = `<!--closing-comment-->\nThis issue has been closed in #${prNumber}. The change will be included in the next release.`
+
+            const query = `query($number: Int!, $owner: String!, $name: String!) {
+              repository(owner: $owner, name: $name) {
+                pullRequest(number: $number) {
+                  id
+                  closingIssuesReferences(first: 10) { edges { node { number } } }
+                }
+              }
+            }`
+            const res = await github.graphql(query, { number: prNumber, owner: context.repo.owner, name: context.repo.repo })
+            const linkedIssues = res.repository.pullRequest.closingIssuesReferences.edges.map(
+              edge => edge.node.number
+            )
+
+            for (const issueNumber of linkedIssues) {
+              const update = await github.rest.issues.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issueNumber,
+                state: "closed",
+                state_reason: "completed"
+              })
+              if (update.status === 200) {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issueNumber,
+                  body: commentBody
+                })
+              }
+            }
