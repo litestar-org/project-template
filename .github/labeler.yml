@@ -1,0 +1,68 @@
+version: v1
+
+labels:
+  # -- type (from the Conventional Commit PR title) ---------------------------
+  - label: "type/feat"
+    sync: true
+    matcher:
+      title: '^feat(\([^)]+\))?!?:'
+
+  - label: "type/fix"
+    sync: true
+    matcher:
+      title: '^fix(\([^)]+\))?!?:'
+
+  - label: "type/docs"
+    sync: true
+    matcher:
+      title: '^docs(\([^)]+\))?:'
+
+  - label: "type/refactor"
+    sync: true
+    matcher:
+      title: '^refactor(\([^)]+\))?:'
+
+  - label: "type/test"
+    sync: true
+    matcher:
+      title: '^test(\([^)]+\))?:'
+
+  - label: "type/ci"
+    sync: true
+    matcher:
+      title: '^(ci|build)(\([^)]+\))?:'
+
+  - label: "type/chore"
+    sync: true
+    matcher:
+      title: '^chore(\([^)]+\))?:'
+
+  - label: "Breaking"
+    sync: true
+    matcher:
+      title: '^\w+(\([^)]+\))?!:'
+
+  # -- area (from changed paths) ----------------------------------------------
+  - label: "area/docs"
+    sync: true
+    matcher:
+      files:
+        any: ["docs/**", "**/*.rst", "**/*.md"]
+
+  - label: "area/src"
+    sync: true
+    matcher:
+      files:
+        any: ["src/**"]
+
+  - label: "area/tests"
+    sync: true
+    matcher:
+      files:
+        any: ["tests/**", "docs/examples/**"]
+
+  - label: "area/ci"
+    sync: true
+    matcher:
+      files:
+        any: [".github/**"]
