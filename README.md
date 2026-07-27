@@ -54,6 +54,8 @@ make lint
 make upgrade
 ```
 
+See [CONTRIBUTING.rst](CONTRIBUTING.rst) for the full contribution guide.
+
 ## Docs
 
 > [!IMPORTANT]\
