@@ -1,0 +1,53 @@
+name: Pull Request Labeler
+
+on:
+  # pull_request_target is required so GITHUB_TOKEN can add labels to PRs
+  # originating from forks. Safe here: no PR head code is checked out or
+  # executed - the jobs only use the labeler action and API calls, and the
+  # labeler config is read from the base repository.
+  pull_request_target: # zizmor: ignore[dangerous-triggers]
+    types:
+      - opened
+      - edited
+      - synchronize
+      - reopened
+
+permissions: {}
+
+jobs:
+  apply-labels:
+    name: Apply labels from title and paths
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: fuxingloh/multi-labeler@b15a54460c38f54043fa75f7b08a0e2aa5b94b5b # v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+  distinguish-pr-origin:
+    name: Label internal vs external contributions
+    needs: apply-labels
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+    steps:
+      - uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        with:
+          script: |
+            // author_association avoids a hard-coded maintainer list: OWNER,
+            // MEMBER, and COLLABORATOR are treated as internal.
+            const association = context.payload.pull_request.author_association
+            const internal = ["OWNER", "MEMBER", "COLLABORATOR"].includes(association)
+            const labels = internal
+              ? ["pr/internal"]
+              : ["pr/external", "triage required"]
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              labels
+            })
