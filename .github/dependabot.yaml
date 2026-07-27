@@ -4,3 +4,7 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+    # Wait a week before proposing a newly-published version, mirroring the uv
+    # `exclude-newer` policy. Reduces exposure to compromised fresh releases.
+    cooldown:
+      default-days: 7
