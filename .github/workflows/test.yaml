@@ -43,7 +43,7 @@ jobs:
         if: inputs.coverage
         run: uv run pytest docs/examples tests --cov=project_template --cov-report=xml
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: inputs.coverage
         with:
           name: coverage-xml
