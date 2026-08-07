@@ -23,8 +23,8 @@ upgrade:       										## Upgrade all dependencies to the latest stable versio
 	@$(UV) lock --upgrade
 	@$(UV) sync --all-groups
 	@echo "=> Dependencies Updated"
-	@$(ENV_PREFIX)pre-commit autoupdate
-	@echo "=> Updated Pre-commit"
+	@$(UV) run prek update
+	@echo "=> Updated prek hooks"
 
 # =============================================================================
 # Developer Utils
@@ -59,10 +59,10 @@ destroy: 											## Destroy the virtual environment
 # Tests, Linting, Coverage
 # =============================================================================
 .PHONY: lint
-lint: 												## Runs pre-commit hooks; includes ruff linting, codespell, black
-	@echo "=> Running pre-commit process"
-	@$(UV) run pre-commit run --all-files
-	@echo "=> Pre-commit complete"
+lint: 												## Runs prek hooks; includes ruff linting, codespell, black
+	@echo "=> Running prek process"
+	@$(UV) run prek run --all-files
+	@echo "=> prek complete"
 
 .PHONY: coverage
 coverage:  											## Run the tests and generate coverage report
