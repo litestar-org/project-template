@@ -22,21 +22,26 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install Pre-Commit
-        run: python -m pip install pre-commit && pre-commit install
+      - name: Install prek
+        id: prek
+        uses: j178/prek-action@4e14d07f9231acabce116ccfca13b13dd9755ece # v3.0.0
+        with:
+          install-only: true
+          # The action's cache key omits the prek version; key our own below.
+          cache: false
 
-      - name: Load cached Pre-Commit Dependencies
-        id: cached-pre-commit-dependencies
+      - name: Load cached prek dependencies
+        id: cached-prek-dependencies
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
-          path: ~/.cache/pre-commit/
-          key: pre-commit-|${{ env.pythonLocation }}|${{ hashFiles('.pre-commit-config.yaml') }}
+          path: ~/.cache/prek/
+          key: prek-${{ steps.prek.outputs.prek-version }}-${{ runner.os }}-${{ runner.arch }}-${{ env.pythonLocation }}-${{ hashFiles('.pre-commit-config.yaml') }}
 
-      - name: Execute Pre-Commit
+      - name: Execute prek
         env:
           # slotscheck imports the package by name; expose the src layout on the path
           PYTHONPATH: src
-        run: pre-commit run --show-diff-on-failure --color=always --all-files
+        run: prek run --show-diff-on-failure --color=always --all-files
 
   test:
     permissions:
