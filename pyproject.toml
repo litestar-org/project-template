@@ -93,6 +93,43 @@ test = [
     "pytest-cov>=4.1.0",
 ]
 
+[tool.uv]
+# The `= false` exclude-newer-package opt-out below landed in uv 0.9.25;
+# require it so older installs fail fast instead of silently ignoring it.
+# https://docs.astral.sh/uv/reference/settings/#required-version
+required-version = ">=0.9.25"
+# Ignore distributions published within the last week during resolution for
+# reproducibility and supply-chain safety. Accepts a friendly duration
+# (resolved relative to the current time on each run), an RFC 3339 timestamp,
+# or an ISO 8601 duration. See:
+# https://docs.astral.sh/uv/reference/settings/#exclude-newer
+exclude-newer = "1 week"
+
+# Opt the Litestar ecosystem out of the cooldown so its newest releases are
+# always resolvable (version gated by required-version above). sqlglot and
+# sqlglotc are not litestar-org packages, but sqlspec tracks them closely.
+# https://docs.astral.sh/uv/reference/settings/#exclude-newer-package
+[tool.uv.exclude-newer-package]
+advanced-alchemy = false
+litestar = false
+litestar-asyncapi = false
+litestar-asyncpg = false
+litestar-autowire = false
+litestar-email = false
+litestar-granian = false
+litestar-htmx = false
+litestar-mcp = false
+litestar-oracledb = false
+litestar-queues = false
+litestar-saq = false
+litestar-security = false
+litestar-vite = false
+polyfactory = false
+pytest-databases = false
+sqlglot = false
+sqlglotc = false
+sqlspec = false
+
 [tool.black]
 line-length = 120
 include = '\.pyi?$'
