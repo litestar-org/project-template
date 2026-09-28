@@ -104,10 +104,31 @@ required-version = ">=0.9.25"
 # or an ISO 8601 duration. See:
 # https://docs.astral.sh/uv/reference/settings/#exclude-newer
 exclude-newer = "1 week"
-# Opt first-party (litestar-org) packages out of the cooldown so their newest
-# releases are always resolvable (version gated by required-version above).
+
+# Opt the Litestar ecosystem out of the cooldown so its newest releases are
+# always resolvable (version gated by required-version above). sqlglot and
+# sqlglotc are not litestar-org packages, but sqlspec tracks them closely.
 # https://docs.astral.sh/uv/reference/settings/#exclude-newer-package
-exclude-newer-package = { litestar = false, advanced-alchemy = false, polyfactory = false }
+[tool.uv.exclude-newer-package]
+advanced-alchemy = false
+litestar = false
+litestar-asyncapi = false
+litestar-asyncpg = false
+litestar-autowire = false
+litestar-email = false
+litestar-granian = false
+litestar-htmx = false
+litestar-mcp = false
+litestar-oracledb = false
+litestar-queues = false
+litestar-saq = false
+litestar-security = false
+litestar-vite = false
+polyfactory = false
+pytest-databases = false
+sqlglot = false
+sqlglotc = false
+sqlspec = false
 
 [tool.black]
 line-length = 120

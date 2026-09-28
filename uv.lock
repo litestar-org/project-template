@@ -17,9 +17,25 @@ exclude-newer = "0001-01-01T00:00:00Z" # This has no effect and is included for 
 exclude-newer-span = "P1W"
 
 [options.exclude-newer-package]
-advanced-alchemy = false
+litestar-queues = false
+litestar-htmx = false
+litestar-saq = false
+sqlglot = false
+litestar-asyncapi = false
+sqlglotc = false
+litestar-mcp = false
+litestar-oracledb = false
 litestar = false
+pytest-databases = false
+sqlspec = false
+litestar-vite = false
+litestar-security = false
+advanced-alchemy = false
+litestar-asyncpg = false
+litestar-email = false
+litestar-granian = false
 polyfactory = false
+litestar-autowire = false
 
 [[package]]
 name = "accessible-pygments"
